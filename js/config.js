@@ -10,4 +10,4 @@ var config = {
 firebase.initializeApp(config);
 
 var database = firebase.database();
-var booksDb = database.ref("testitems");
+var users = database.ref("users");
