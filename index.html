@@ -18,11 +18,53 @@
   <nav class="white" role="navigation">
     <div class="nav-wrapper container">
       <!-- <a id="logo-container" href="#" class="brand-logo"><img src="https://i.pinimg.com/originals/dd/64/da/dd64da585bc57cb05e5fd4d8ce873f57.png"></a> -->
+      <script>
+        function LogOut(){
+          firebase.auth().signOut();
+          location.href = "index.html";
+        }
+      </script>
       <ul class="right hide-on-med-and-down">
-        <li><a href="#">Signup</a></li>
-        <li><a href="#">Login</a></li>
-        <li><a href="#">Logout</a></li>
+        <li><a href="userpage.html" id = "myUserpage">Userpage</a></li>
+        <li><a href="create_account.html" id = "mySignup">Signup</a></li>
+        <li><a href="login_page.html" id = "myLogin">Login</a></li>
+        <li><a onclick = "LogOut()" id = "myLogout">Logout</a></li>
       </ul>
+
+      <script>
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in.
+            document.getElementById("myUserpage").style.display = "block";
+            document.getElementById("mySignup").style.display = "none";
+            document.getElementById("myLogin").style.display = "none";
+            document.getElementById("myLogout").style.display = "block";
+
+    
+            /*
+            document.getElementById("bprofile").href = "profile.html";
+            document.getElementById("bprofile").onclick = null;
+            var db = firebase.database().ref().child("users").child(uid);
+            db.child("credits").once("value").then(function(snapshot) {
+              var credits_val = snapshot.val();
+              document.getElementById("bcredits").innerHTML = "¢ " + String(credits_val);
+            });
+            */
+          } else {
+            // User is signed out.
+            document.getElementById("myUserpage").style.display = "none";
+            document.getElementById("myLogin").style.display = "block";
+            document.getElementById("myLogin").style.display = "block";
+            document.getElementById("myLogout").style.display = "none";
+
+            /*
+            document.getElementById("bprofile").href = "#";
+            document.getElementById("bprofile").onclick = function() {document.getElementById('id01').style.display='block'};
+            */
+          }
+        });
+      </script>
+
       <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
   </nav>

@@ -17,16 +17,97 @@
   <nav class="white" role="navigation">
     <div class="nav-wrapper container">
       <!-- <a id="logo-container" href="#" class="brand-logo"><img src="https://i.pinimg.com/originals/dd/64/da/dd64da585bc57cb05e5fd4d8ce873f57.png"></a> -->
+      <script>
+        function LogOut(){
+          firebase.auth().signOut();
+          location.href = "index.html";
+        }
+      </script>
       <ul class="right hide-on-med-and-down">
-        <li><a href="#">Signup</a></li>
-        <li><a href="#">Login</a></li>
-        <li><a href="#">Logout</a></li>
+        <li><a href="userpage.html" id = "myUserpage">Userpage</a></li>
+        <li><a href="create_account.html" id = "mySignup">Signup</a></li>
+        <li><a href="login_page.html" id = "myLogin">Login</a></li>
+        <li><a onclick = "LogOut()" id = "myLogout">Logout</a></li>
       </ul>
+
+      <script>
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in.
+            document.getElementById("myUserpage").style.display = "block";
+            document.getElementById("mySignup").style.display = "none";
+            document.getElementById("myLogin").style.display = "none";
+            document.getElementById("myLogout").style.display = "block";
+
+    
+            /*
+            document.getElementById("bprofile").href = "profile.html";
+            document.getElementById("bprofile").onclick = null;
+            var db = firebase.database().ref().child("users").child(uid);
+            db.child("credits").once("value").then(function(snapshot) {
+              var credits_val = snapshot.val();
+              document.getElementById("bcredits").innerHTML = "¢ " + String(credits_val);
+            });
+            */
+          } else {
+            // User is signed out.
+            document.getElementById("myUserpage").style.display = "none";
+            document.getElementById("myLogin").style.display = "block";
+            document.getElementById("myLogin").style.display = "block";
+            document.getElementById("myLogout").style.display = "none";
+
+            /*
+            document.getElementById("bprofile").href = "#";
+            document.getElementById("bprofile").onclick = function() {document.getElementById('id01').style.display='block'};
+            */
+          }
+        });
+      </script>
       <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
   </nav>
+  <div class="row">
+    <div class="input-field col s6 offset-s3">
+      <input id="added_fav_book" type="text" class="validate">
+      <label for="email">Favourite book</label>
+      <span class="helper-text" data-error="wrong" data-success="right">Add your favourite book</span>
+    </div>
+    <div class="col s3">
+      <a id="add_button" style="margin-top: 20px;"class="waves-effect waves-light btn">Add</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s6">
+      <h3> Favourite books</h3>
+      <li style="display:none" id="book_template" class="collection-item avatar">
+          <div class="row">
+            <div class="col s3">
+              <img class="book_image" src="" alt="" class="circle">
+            </div>
+            <div class="col s9">
+              <span class="title"></span>
+              <p> <a class="goodreads_url" href="https://www.goodreads.com/book/show/40961427"> More on GoodReads </a> </p>
+                 
+              </p> Second Line </p>
+              <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+            </div>
+          </div>
+          
+          
+        </li>
+      <ul class="collection" id="fav_books">
+        
 
-  Hello world
+        
+      </ul>
+    </div>
+    <div class="col s6">
+      <h3> Recommended books</h3>
+      <ul class="collection" id="rec_books">
+        
+      </ul>
+    </div>
+  </div>
 
   <!--  Scripts-->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

@@ -21,8 +21,9 @@ app.get('/goodbooksindex/:bookname', (req, response) => {
        		result = result.GoodreadsResponse.search[0].results[0].work[0].best_book[0];
        		console.log(result);
        		var book = {
+            goodreads_id: result.id[0]['_'],
        			title: result.title[0],
-       			author: result.author.name,
+       			author: result.author[0].name,
        			image_url: result.image_url[0],
        			small_image_url: result.small_image_url[0]
        		};
