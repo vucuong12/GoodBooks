@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Parallax Template - Materialize</title>
+  <title>UserPage</title>
 
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -67,47 +67,69 @@
     </div>
   </nav>
   <div class="row">
-    <div class="input-field col s6 offset-s3">
-      <input id="added_fav_book" type="text" class="validate">
-      <label for="email">Favourite book</label>
-      <span class="helper-text" data-error="wrong" data-success="right">Add your favourite book</span>
-    </div>
-    <div class="col s3">
-      <a id="add_button" style="margin-top: 20px;"class="waves-effect waves-light btn">Add</a>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col s6">
-      <h3> Favourite books</h3>
-      <li style="display:none" id="book_template" class="collection-item avatar">
-          <div class="row">
-            <div class="col s3">
-              <img class="book_image" src="" alt="" class="circle">
-            </div>
-            <div class="col s9">
-              <span class="title"></span>
-              <p> <a class="goodreads_url" href="https://www.goodreads.com/book/show/40961427"> More on GoodReads </a> </p>
-                 
-              </p> Second Line </p>
-              <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-            </div>
-          </div>
-          
-          
-        </li>
-      <ul class="collection" id="fav_books">
+    <div class="col s2">
+      <div class="row">
+        <div class="col s12">
+          <h5 id="user_full_name"> Cuong Nguyen </h5>
+          <img style="max-width: 90%" src="https://pbs.twimg.com/profile_images/847820097821581312/gpfF5-xH_400x400.jpg">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <h5> Following </h5>
+        </div>
         
+      </div>
+    </div>
+    <div class="col s10">
 
-        
-      </ul>
-    </div>
-    <div class="col s6">
-      <h3> Recommended books</h3>
-      <ul class="collection" id="rec_books">
-        
-      </ul>
+      <div class="row">
+        <div class="input-field col s6 offset-s3">
+          <input id="added_fav_book" type="text" class="validate">
+          <label for="email">Favourite book</label>
+          <span class="helper-text" data-error="wrong" data-success="right">Add your favourite book</span>
+        </div>
+        <div class="col s3">
+          <a id="add_button" style="margin-top: 20px;"class="waves-effect waves-light btn">Add</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6">
+          <h3> Favourite books</h3>
+          <li style="display:none" id="book_template" class="collection-item avatar">
+              <div class="row">
+                <div class="col s3">
+                  <img class="book_image" src="" alt="" class="circle">
+                </div>
+                <div class="col s9">
+                  <span class="title"></span>
+                  <p> <a class="goodreads_url" href="https://www.goodreads.com/book/show/40961427"> More on GoodReads </a> </p>
+                     
+                  </p> Second Line </p>
+                  <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                </div>
+              </div>
+              
+              
+            </li>
+          <ul class="collection" id="fav_books">
+            
+
+            
+          </ul>
+        </div>
+        <div class="col s6">
+          <h3> Recommended books</h3>
+          <ul class="collection" id="rec_books">
+            
+          </ul>
+        </div>
+      </div>
+
+
     </div>
   </div>
+  
 
   <!--  Scripts-->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
