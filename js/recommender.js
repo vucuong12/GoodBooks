@@ -103,6 +103,7 @@ firebase.auth().onAuthStateChanged(function(currentUser) {
 
 	$("#add_button").click(function(){
 	    var book_name = $("#added_fav_book").val();
+	    document.getElementById("myGif").style.display = "block";
 	    addFavBook(user.uid, book_name);
 	});
 })
@@ -141,8 +142,10 @@ var addFavBook = function(userId, bookName) {
 			  			// Store the recommended books
 					  	console.log("done storing a new recommended book !")
 					  	i+=1;
-					  	if (i == recBooks.length)
+					  	if (i == recBooks.length){
 					  		updateBooksOnUserPage(user);
+					  		document.getElementById("myGif").style.display = "none";
+					  	}
 					  }).catch(function(error) {
 					    console.error('There was an error storing a new favourite book:', error);
 					  });
