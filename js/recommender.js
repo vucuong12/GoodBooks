@@ -24,6 +24,7 @@ var getRecommendedBooks = function(bookName, callback) {
 	});
 }
 var user = {};
+
 var updateBooksOnUserPage = function(user) {
 	$("#fav_books").empty();
 	$("#rec_books").empty();
@@ -93,7 +94,20 @@ var updateBooksOnUserPage = function(user) {
 
 firebase.auth().onAuthStateChanged(function(currentUser) {
 	user = currentUser;
-	console.log("===> user changed = ", user)
+
+	var uid_param = getParameterByName("uid");
+	if (uid_param != user.uid) {
+		$("#follow_button").show();
+	}
+
+	firebase.database().ref('users/' + currentUser.uid).once('value').then(function(snapshot) {
+	  var tmp_user = snapshot.val() || 'Anonymous';
+	  console.log("This is a user");
+	  $("#user_full_name").html(tmp_user.first_name + " " + tmp_user.surname);
+	  
+	});
+
+	console.log("===> user changed = ", user.uid)
 	if (!user) {
 		return;
 	}
@@ -151,6 +165,16 @@ var addFavBook = function(userId, bookName) {
 		  });
   	})
 	})
+}
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 
