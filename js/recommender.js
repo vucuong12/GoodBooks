@@ -128,6 +128,7 @@ var addFavBook = function(userId, bookName) {
   			updateBooksOnUserPage(user)
   			// Store the recommended books
 		  	console.log("done storing a new favourite book !")
+		  	var i = 0
 		  	for (var index in recBooks) {
 		  		var recBook = recBooks[index]
 		  		getBookFromGoodReads(recBook.Name, function(book) {
@@ -139,7 +140,9 @@ var addFavBook = function(userId, bookName) {
 			  		.then(function(bookRef) {
 			  			// Store the recommended books
 					  	console.log("done storing a new recommended book !")
-					  	updateBooksOnUserPage(user);
+					  	i+=1;
+					  	if (i == recBooks.length)
+					  		updateBooksOnUserPage(user);
 					  }).catch(function(error) {
 					    console.error('There was an error storing a new favourite book:', error);
 					  });
