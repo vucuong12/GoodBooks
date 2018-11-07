@@ -23,6 +23,9 @@
           location.href = "index.html";
         }
       </script>
+      <ul class="left hide-on-med-and-down">
+        <li><a href="index.html" id = "myGoodBooks">GoodBooks</a></li>
+      </ul>
       <ul class="right hide-on-med-and-down">
         <li><a href="userpage.html" id = "myUserpage">Userpage</a></li>
         <li><a href="create_account.html" id = "mySignup">Signup</a></li>
@@ -39,27 +42,12 @@
             document.getElementById("myLogin").style.display = "none";
             document.getElementById("myLogout").style.display = "block";
 
-    
-            /*
-            document.getElementById("bprofile").href = "profile.html";
-            document.getElementById("bprofile").onclick = null;
-            var db = firebase.database().ref().child("users").child(uid);
-            db.child("credits").once("value").then(function(snapshot) {
-              var credits_val = snapshot.val();
-              document.getElementById("bcredits").innerHTML = "¢ " + String(credits_val);
-            });
-            */
           } else {
             // User is signed out.
             document.getElementById("myUserpage").style.display = "none";
             document.getElementById("myLogin").style.display = "block";
             document.getElementById("myLogin").style.display = "block";
             document.getElementById("myLogout").style.display = "none";
-
-            /*
-            document.getElementById("bprofile").href = "#";
-            document.getElementById("bprofile").onclick = function() {document.getElementById('id01').style.display='block'};
-            */
           }
         });
       </script>
