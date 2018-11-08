@@ -24,12 +24,13 @@ var getRecommendedBooks = function(bookName, callback) {
 	});
 }
 var user = {};
+var targetuser = {}
 
-var updateBooksOnUserPage = function(user) {
+var updateBooksOnUserPage = function(uid) {
 	$("#fav_books").empty();
 	$("#rec_books").empty();
 	var bookTemplate = $("#book_template");
-	database.ref("/users/" + user.uid + "/favourite_book").once('value', function(snapshot) {
+	database.ref("/users/" + uid + "/favourite_book").once('value', function(snapshot) {
 		if (!snapshot.val()) return;
 		var keys = Object.keys(snapshot.val());
 		var books = [];
@@ -61,7 +62,7 @@ var updateBooksOnUserPage = function(user) {
 	  }
 	})
 
-	database.ref("/users/" + user.uid + "/recommended_book").once('value', function(snapshot) {
+	database.ref("/users/" + uid + "/recommended_book").once('value', function(snapshot) {
 		if (!snapshot.val()) return;
 		var keys = Object.keys(snapshot.val());
 		var books = [];
@@ -93,33 +94,89 @@ var updateBooksOnUserPage = function(user) {
 }
 
 firebase.auth().onAuthStateChanged(function(currentUser) {
+	$("#myUserpage").attr("href", "userpage.html?uid="+ currentUser.uid)
 	user = currentUser;
 
 	var uid_param = getParameterByName("uid");
 	if (uid_param != user.uid) {
-		$("#follow_button").show();
+		$("#search_section").hide();
+	} else {
+		$("#search_section").show();
 	}
+	
 
 	firebase.database().ref('users/' + currentUser.uid).once('value').then(function(snapshot) {
 	  var tmp_user = snapshot.val() || 'Anonymous';
-	  console.log("This is a user");
-	  $("#user_full_name").html(tmp_user.first_name + " " + tmp_user.surname);
-	  
+
+	  firebase.database().ref('users/' + uid_param).once('value').then(function(snapshot) {
+	  	targetuser = snapshot.val() || 'Anonymous';
+
+	  	// Starttttttt -----
+	  	$("#user_full_name").html(targetuser.first_name + " " + targetuser.surname);
+	  	console.log("====> followingnnnnn", targetuser.following)
+			//show following users
+			for (var key in targetuser.following) {
+				var following_user = targetuser.following[key];
+				var afollowing = $('<a></a>');
+				afollowing.attr("href", "userpage.html?uid=" + following_user.uid).html(following_user.first_name + " " + following_user.surname)
+				//afollowing.appendTo($("#following_list"));
+				var adiv = $('<div></div>').append(afollowing);
+				adiv.appendTo($("#following_list"));
+			}
+	  })
+
+	  // console.log("This is a user ", tmp_user.following);
+	  if (uid_param != user.uid) {
+	  	var check = false;
+	  	for (var key in tmp_user.following) {
+	  		if (tmp_user.following[key].uid == uid_param) {
+	  			check = true;
+	  		}
+	  		// if (tmp_user.following[key].uid) {
+	  		// 	$("#user_full_name").html(tmp_user.first_name + " " + tmp_user.surname);
+	  		// }
+	  	}
+			if (!check) $("#follow_button").show();
+		}
+		updateBooksOnUserPage(uid_param);
 	});
 
 	console.log("===> user changed = ", user.uid)
 	if (!user) {
 		return;
 	}
-	
 
-	updateBooksOnUserPage(user);
+	
 
 	$("#add_button").click(function(){
 	    var book_name = $("#added_fav_book").val();
+	    document.getElementById("myGif").style.display = "block";
 	    addFavBook(user.uid, book_name);
 	});
+
+	$("#follow_button").click(function(){
+	    follow_user(user.uid, uid_param);
+	});
 })
+
+var follow_user = function (userA, userB) {
+	firebase.database().ref('users/' + userB).once('value').then(function(snapshot) {
+	  var an_user = snapshot.val() || 'Anonymous';
+	  an_user.uid = userB;
+	  firebase.database().ref('/users/' + userA + "/following")
+		.push(an_user)
+		.then(function(userRef) {
+			// Store the recommended books
+	  	console.log("done storing a new following !")
+	  	$("#follow_button").hide();
+	  }).catch(function(error) {
+	    console.error('There was an error storing a new favourite book:', error);
+	  });
+	});
+
+
+	
+}
 
 
 var addFavBook = function(userId, bookName) {
@@ -139,9 +196,10 @@ var addFavBook = function(userId, bookName) {
   		firebase.database().ref('/users/' + userId + "/favourite_book")
   		.push(book)
   		.then(function(bookRef) {
-  			updateBooksOnUserPage(user)
+  			updateBooksOnUserPage(user.uid)
   			// Store the recommended books
 		  	console.log("done storing a new favourite book !")
+		  	var i = 0
 		  	for (var index in recBooks) {
 		  		var recBook = recBooks[index]
 		  		getBookFromGoodReads(recBook.Name, function(book) {
@@ -153,7 +211,11 @@ var addFavBook = function(userId, bookName) {
 			  		.then(function(bookRef) {
 			  			// Store the recommended books
 					  	console.log("done storing a new recommended book !")
-					  	updateBooksOnUserPage(user);
+					  	i+=1;
+					  	if (i == recBooks.length){
+					  		updateBooksOnUserPage(user.uid);
+					  		document.getElementById("myGif").style.display = "none";
+					  	}
 					  }).catch(function(error) {
 					    console.error('There was an error storing a new favourite book:', error);
 					  });

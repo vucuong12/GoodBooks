@@ -117,6 +117,13 @@
     </div>
   </footer>
 
+  <script type="text/javascript">
+    firebase.auth().onAuthStateChanged(function(currentUser) {
+         $("#myUserpage").attr("href", "userpage.html?uid="+ currentUser.uid)
+    });
+
+  </script>
+
 
   <!--  Scripts-->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
