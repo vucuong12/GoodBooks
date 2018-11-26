@@ -26,6 +26,47 @@ var getRecommendedBooks = function(bookName, callback) {
 var user = {};
 var targetuser = {}
 
+var allUsers = []
+
+var getAllUsers = function() {
+	database.ref("/users").once('value', function(snapshot) {
+		if (!snapshot.val()) return;
+		var keys = Object.keys(snapshot.val());
+		var data = {}
+	  	for (var index = 0; index < keys.length; index++){
+		    var key = keys[index];
+		    var oneuser = snapshot.val()[key];
+		    console.log(oneuser)
+		    // allUsers.push({
+		    // 	text: oneuser.first_name + " " + oneuser.surname,
+		    // 	uid: oneuser.uid
+		    // });
+		    allUsers.push(oneuser)
+		    data[oneuser.first_name + " " + oneuser.surname] = null;
+		}
+		$('input.autocomplete').autocomplete({
+		        data: data
+		      });
+
+		$("#go_to_user_btn").click(function(){
+		    var username = $("input.autocomplete").val();
+		    if (username == "") {alert("Please input user name !"); return}
+		    for (var i = 0; i < allUsers.length; i++) {
+		    	if (username == allUsers[i].first_name + " " + allUsers[i].surname) {
+		    		//alert(JSON.stringify(allUsers[i]))
+		    		window.location = "userpage.html?uid=" + allUsers[i].uid;
+		    		break;
+		    	}
+		    }
+		    
+		});
+	})
+}
+
+getAllUsers()
+
+
+
 var updateBooksOnUserPage = function(uid) {
 	$("#fav_books").empty();
 	$("#rec_books").empty();
