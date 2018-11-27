@@ -28,6 +28,37 @@ var targetuser = {}
 
 var allUsers = []
 
+var setupBookAutocomplete = function() {
+	var temp = {}
+  	for (var index = 0; index < bookList.length; index++){
+	    temp[bookList[index]] = null;
+	}
+	//console.log(temp)
+
+	$(document).ready(function(){
+    	$('#added_fav_book').autocomplete({
+      		data: temp,
+   		 });
+  	});
+
+	$("#add_button").click(function(){
+	    var bookName = $("#added_fav_book").val();
+	    if (bookName == "") {alert("Please input book name !"); return}
+	    for (var i = 0; i < bookList.length; i++) {
+	    	if (bookName == bookList[i]) {
+	    		//alert(JSON.stringify(allUsers[i]))
+	    		firebase.auth().onAuthStateChanged(function(currentUser) {
+	    			document.getElementById("myGif").style.display = "block";
+	    			addFavBook(currentUser.uid, bookName);
+	    		});
+	    		break;
+	    	}
+	    }
+	    
+	});
+}
+setupBookAutocomplete()
+
 var getAllUsers = function() {
 	database.ref("/users").once('value', function(snapshot) {
 		if (!snapshot.val()) return;
